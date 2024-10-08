@@ -101,6 +101,7 @@
 
 # COMMAND ----------
 
+my_name = "John Doe" 
 assert my_name is not None, "Name is still None"
 print(my_name)
 

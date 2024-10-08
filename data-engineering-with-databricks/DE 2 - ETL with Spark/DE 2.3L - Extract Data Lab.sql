@@ -36,6 +36,14 @@
 
 -- COMMAND ----------
 
+-- MAGIC %python
+-- MAGIC print(DA.paths.kafka_events)
+-- MAGIC
+-- MAGIC files = dbutils.fs.ls(DA.paths.kafka_events)
+-- MAGIC display(files)
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC
 -- MAGIC
@@ -74,7 +82,22 @@
 
 -- COMMAND ----------
 
--- <FILL_IN> "${DA.paths.kafka_events}"
+SELECT * FROM json.`${DA.paths.kafka_events}`
+
+-- COMMAND ----------
+
+CREATE OR REPLACE VIEW events_json
+AS SELECT CAST(key as binary),
+CAST(offset as bigint),
+CAST(partition as  int ),
+CAST(timestamp as bigint),
+CAST(topic as string),
+CAST(value as binary)
+FROM json.`${DA.paths.kafka_events}`
+
+-- COMMAND ----------
+
+
 
 -- COMMAND ----------
 
