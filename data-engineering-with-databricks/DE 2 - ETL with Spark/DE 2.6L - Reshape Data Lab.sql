@@ -97,11 +97,14 @@
 
 -- COMMAND ----------
 
--- CREATE OR REPLACE TEMP VIEW events_pivot
--- <FILL_IN>
--- ("cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
--- "register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
--- "cc_info", "foam", "reviews", "original", "delivery", "premium")
+CREATE OR REPLACE TEMP VIEW events_pivot AS
+SELECT * FROM (
+  SELECT user_id user, event_name 
+  FROM events
+) PIVOT ( count(*) FOR event_name IN (
+    "cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
+    "register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
+    "cc_info", "foam", "reviews", "original", "delivery", "premium" ))
 
 -- COMMAND ----------
 
@@ -119,10 +122,13 @@
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC # TODO
--- MAGIC # (spark.read
--- MAGIC #     <FILL_IN>
--- MAGIC #     .createOrReplaceTempView("events_pivot"))
+-- MAGIC # ANSWER
+-- MAGIC (spark.read.table("events")
+-- MAGIC     .groupBy("user_id")
+-- MAGIC     .pivot("event_name")
+-- MAGIC     .count()
+-- MAGIC     .withColumnRenamed("user_id", "user")
+-- MAGIC     .createOrReplaceTempView("events_pivot"))
 
 -- COMMAND ----------
 
@@ -178,8 +184,11 @@
 
 -- COMMAND ----------
 
--- CREATE OR REPLACE TEMP VIEW clickpaths AS
--- <FILL_IN>
+CREATE OR REPLACE TEMP VIEW clickpaths AS
+SELECT * 
+FROM events_pivot a
+JOIN transactions b 
+  ON a.user = b.user_id
 
 -- COMMAND ----------
 
@@ -196,10 +205,11 @@
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC # TODO
--- MAGIC # (spark.read
--- MAGIC #     <FILL_IN>
--- MAGIC #     .createOrReplaceTempView("clickpaths"))
+-- MAGIC # ANSWER
+-- MAGIC from pyspark.sql.functions import col
+-- MAGIC (spark.read.table("events_pivot")
+-- MAGIC     .join(spark.table("transactions"), col("events_pivot.user") == col("transactions.user_id"), "inner")
+-- MAGIC     .createOrReplaceTempView("clickpaths"))
 
 -- COMMAND ----------
 
