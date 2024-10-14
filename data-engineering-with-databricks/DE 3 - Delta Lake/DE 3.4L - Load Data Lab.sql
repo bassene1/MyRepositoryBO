@@ -53,7 +53,7 @@
 -- MAGIC | field  | type | description |
 -- MAGIC | ------ | ---- | ----------- |
 -- MAGIC | key    | BINARY | The **`user_id`** field is used as the key; this is a unique alphanumeric field that corresponds to session/cookie information |
--- MAGIC | offset | LONG | This is a unique value, monotonically increasing for each partition |
+-- MAGIC | offset | C | This is a unique value, monotonically increasing for each partition |
 -- MAGIC | partition | INTEGER | Our current Kafka implementation uses only 2 partitions (0 and 1) |
 -- MAGIC | timestamp | LONG    | This timestamp is recorded as milliseconds since epoch, and represents the time at which the producer appends a record to a partition |
 -- MAGIC | topic | STRING | While the Kafka service hosts multiple topics, only those records from the **`clickstream`** topic are included here |
@@ -61,14 +61,19 @@
 
 -- COMMAND ----------
 
+CREATE OR REPLACE TABLE events_raw(key binary,
+offset long,
+partition   int ,
+timestamp  long,
+topic string,
+value  binary);
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC
 -- MAGIC ## Define Schema for Empty Delta Table
 -- MAGIC Create an empty managed Delta table named **`events_raw`** using the same schema.
-
--- COMMAND ----------
-
--- <FILL_IN>
 
 -- COMMAND ----------
 
@@ -108,7 +113,8 @@
 
 -- COMMAND ----------
 
--- <FILL_IN>
+INSERT OVERWRITE events_raw
+SELECT * FROM events_json;
 
 -- COMMAND ----------
 
@@ -120,7 +126,7 @@
 
 -- COMMAND ----------
 
--- <FILL_IN>
+select * from events_raw;
 
 -- COMMAND ----------
 
@@ -162,7 +168,8 @@
 
 -- COMMAND ----------
 
--- <FILL_IN> ${da.paths.datasets}/ecommerce/raw/item-lookup
+CREATE OR REPLACE TABLE item_lookup 
+AS SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/item-lookup`
 
 -- COMMAND ----------
 

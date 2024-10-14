@@ -87,7 +87,7 @@ DESCRIBE HISTORY events
 
 -- COMMAND ----------
 
-INSERT OVERWRITE sales
+6.INSERT OVERWRITE sales
 SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical/`
 
 -- COMMAND ----------

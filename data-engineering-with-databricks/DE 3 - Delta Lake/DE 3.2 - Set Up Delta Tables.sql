@@ -210,8 +210,7 @@ SELECT * FROM purchase_dates
 
 -- COMMAND ----------
 
--- INSERT INTO purchase_dates VALUES
--- (1, 600000000, 42.0, "2020-06-18")
+ INSERT INTO purchase_dates VALUES (1, 600000000, 42.0, "2020-06-18")
 
 -- COMMAND ----------
 

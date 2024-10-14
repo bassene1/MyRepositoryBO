@@ -110,7 +110,7 @@ CREATE OR REPLACE TABLE events_raw
 -- COMMAND ----------
 
 INSERT INTO events_raw
-SELECT * FROM events_json
+SELECT * FROM events_json*
 
 -- COMMAND ----------
 

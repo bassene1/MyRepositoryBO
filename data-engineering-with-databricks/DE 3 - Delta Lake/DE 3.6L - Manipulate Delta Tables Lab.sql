@@ -104,7 +104,7 @@ WHEN NOT MATCHED AND b.delicious = true THEN
 
 -- COMMAND ----------
 
--- <FILL-IN>
+DESCRIBE HISTORY beans
 
 -- COMMAND ----------
 
@@ -148,6 +148,10 @@ SELECT * FROM beans VERSION AS OF 1
 
 -- COMMAND ----------
 
+DESCRIBE HISTORY beans
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC
 -- MAGIC
@@ -168,8 +172,9 @@ SELECT * FROM beans
 
 -- COMMAND ----------
 
--- CREATE OR REPLACE TEMP VIEW pre_delete_vw AS
--- <FILL-IN>
+ CREATE OR REPLACE TEMP VIEW pre_delete_vw AS
+SELECT * 
+FROM students VERSION AS OF 3
 
 -- COMMAND ----------
 
