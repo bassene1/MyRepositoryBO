@@ -69,7 +69,8 @@
 
 -- COMMAND ----------
 
-CREATE CATALOG IF NOT EXISTS ${DA.my_new_catalog}
+CREATE CATALOG IF NOT EXISTS GovernDataCatalog
+  MANAGED LOCATION 's3://databricks-workspace-stack-f696c-bucket/unity-catalog/2467319153984042'
 
 -- COMMAND ----------
 
@@ -85,7 +86,7 @@ CREATE CATALOG IF NOT EXISTS ${DA.my_new_catalog}
 
 -- COMMAND ----------
 
-USE CATALOG ${DA.my_new_catalog}
+USE CATALOG GovernDataCatalog
 
 -- COMMAND ----------
 
@@ -161,15 +162,16 @@ SELECT * FROM agg_heartrate
 
 -- COMMAND ----------
 
-GRANT USAGE ON CATALOG ${DA.my_new_catalog} TO `account users`;
+GRANT USAGE ON CATALOG GovernDataCatalog
+TO `account users`;
 
 -- COMMAND ----------
 
-GRANT USAGE ON SCHEMA example TO `account users`;
+GRANT USAGE ON SCHEMA example  to `account users`;
 
 -- COMMAND ----------
 
-GRANT SELECT ON VIEW agg_heartrate to `account users`
+GRANT SELECT ON VIEW agg_heartrate to `account users`;
 
 -- COMMAND ----------
 
@@ -473,7 +475,7 @@ SHOW GRANTS ON SCHEMA example
 
 -- COMMAND ----------
 
-SHOW GRANTS ON CATALOG ${DA.my_new_catalog}
+SHOW GRANTS ON CATALOG governdatacatalog
 
 -- COMMAND ----------
 
@@ -521,7 +523,7 @@ SHOW GRANTS ON FUNCTION my_mask
 
 -- COMMAND ----------
 
-REVOKE USAGE ON CATALOG ${DA.my_new_catalog} FROM `account users`
+REVOKE USAGE ON CATALOG governdatacatalog  FROM `account users`
 
 -- COMMAND ----------
 
